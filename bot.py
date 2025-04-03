@@ -21,25 +21,29 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("👋 Bonjour, je suis votre assistant kiné personnel. Posez-moi vos questions !")
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_input = update.message.text.strip()
-    chat_id = update.message.chat_id
-    print(f"📩 [{chat_id}] Message reçu : {user_input}")
+    try:
+        user_input = update.message.text.strip()
+        chat_id = update.message.chat_id
+        print(f"📩 [{chat_id}] Message reçu : {user_input}")
 
-    patient = find_patient(user_input)
-    if patient:
-        contexte = (
-            f"Prénom : {patient['prenom']}\n"
-            f"Date de naissance : {patient['date_naissance']}\n"
-            f"Téléphone : {patient['telephone']}\n"
-            f"Antécédents : {patient['antecedents']}\n"
-            f"Exercice du jour : {patient['exercice_du_jour']}\n"
-            f"Remarques : {patient['remarques']}"
-        )
-        response = generate_response(contexte, user_input)
-    else:
-        response = "Je ne vous ai pas trouvé dans la base. Veuillez vérifier votre prénom ou contactez votre kiné."
+        patient = find_patient(user_input)
+        if patient:
+            contexte = (
+                f"Prénom : {patient['prenom']}\n"
+                f"Date de naissance : {patient['date_naissance']}\n"
+                f"Téléphone : {patient['telephone']}\n"
+                f"Antécédents : {patient['antecedents']}\n"
+                f"Exercice du jour : {patient['exercice_du_jour']}\n"
+                f"Remarques : {patient['remarques']}"
+            )
+            response = generate_response(contexte, user_input)
+        else:
+            response = "Je ne vous ai pas trouvé dans la base. Veuillez vérifier votre prénom ou contactez votre kiné."
 
-    await update.message.reply_text(response)
+        await update.message.reply_text(response)
+
+    except Exception as e:
+        print("❌ Erreur dans handle_message :", e)
 
 @app.route(WEBHOOK_PATH, methods=["POST"])
 def webhook():
