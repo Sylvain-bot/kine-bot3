@@ -12,7 +12,7 @@ nest_asyncio.apply()
 
 TOKEN = os.environ.get("TELEGRAM_TOKEN")
 WEBHOOK_PATH = "/webhook"
-WEBHOOK_URL = f"{os.environ.get('RENDER_EXTERNAL_URL', 'https://kine-bot.onrender.com')}{WEBHOOK_PATH}"
+WEBHOOK_URL = "https://kine-bot3.onrender.com/webhook"
 
 app = Flask(__name__)
 application = None  # Telegram application instance
